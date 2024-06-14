@@ -1,0 +1,11 @@
+font-family: 'Bebas Neue', sans-serif;
+font-family: 'Zilla Slab', serif;
+Rodies
+font-family: 'Roboto Mono', monospace;
+font-family: 'Dancing Script', cursive;
+font-family: 'DM Serif Display', serif;
+font-family: 'Marcellus SC', serif;
+font-family: 'Nunito Sans', sans-serif;
+font-family: 'Sevillana', cursive;
+font-family: 'Sofia', cursive;
+Syncopate
