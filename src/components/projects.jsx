@@ -35,7 +35,7 @@ const Projects = () => {
       await onSnapshot(collection(db, "Projects"), (snapshot) => {
         const updatedList = snapshot.docs.map((doc) => doc.data());
         setProjects(updatedList);
-        console.log(updatedList);
+        console.log("projects", updatedList);
       });
     return () => unsubscribe();
   }, []);
