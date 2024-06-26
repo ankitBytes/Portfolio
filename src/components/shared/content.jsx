@@ -6,8 +6,7 @@ const Content = ({ text, variant, color }) => {
       color={color ? color : "white"}
       fontFamily={"Lato"}
       textAlign={"justify"}
-          variant={variant ? variant : "h6"}
-          paragraph="true"
+      variant={variant ? variant : "h6"}
     >
       {text}
     </Typography>

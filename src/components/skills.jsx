@@ -1,69 +1,84 @@
-import { useEffect, useState } from "react";
-import { Box, Grid, Icon } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Typography } from "@mui/material";
 
-import ReactIcon from "../assets/icons_skills_section/react.png";
-import Javascript from "../assets/icons_skills_section/javascript.png";
-import HTML from "../assets/icons_skills_section/html.png";
-import CSS from "../assets/icons_skills_section/css.png";
-import Node from "../assets/icons_skills_section/node.png";
-import MongoDB from "../assets/icons_skills_section/mongodb.png";
-import Firebase from "../assets/icons_skills_section/firebase.png";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-const skillIcons = [ReactIcon, Javascript, HTML, CSS, Node, MongoDB, Firebase];
+import Slider from "react-slick";
+import { onSnapshot, collection } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 
-// Function to shuffle an array using Fisher-Yates algorithm
-const shuffleArray = (array) => {
-  let currentIndex = array.length, randomIndex;
+function Skills() {
 
-  // While there remain elements to shuffle...
-  while (currentIndex !== 0) {
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-  }
-
-  return array;
-};
-
-// Function to repeat the skillIcons array multiple times
-const repeatArray = (array, times) => {
-  let repeatedArray = [];
-  for (let i = 0; i < times; i++) {
-    repeatedArray = repeatedArray.concat(array);
-  }
-  return repeatedArray;
-};
-
-const Skills = () => {
-  const [shuffledIcons, setShuffledIcons] = useState([]);
+  const [skills, setSkills] = useState([]);
 
   useEffect(() => {
-    const repeatedIcons = repeatArray(skillIcons, 3); // Repeat the array 3 times
-    setShuffledIcons(shuffleArray(repeatedIcons));
-  }, []);
+    const unsubscribe = onSnapshot(collection(db, "Skills"), (snapshot) => {
+      const updatedList = snapshot.docs.map((doc) => doc.data().skills).flat();
+      setSkills(updatedList);
+      console.log(updatedList);
+    });
 
+    return () => unsubscribe();
+  }, [])
+
+
+  const settings = {
+    dots: false,
+    infinite: true,
+    slidesToShow: 6,
+    slidesToScroll: 1,
+    autoplay: true,
+    speed: 2000,
+    autoplaySpeed: 2000,
+    cssEase: "linear",
+    pauseOnHover: false,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 6,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+          initialSlide: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Grid container maxWidth={"xl"} gap={3} justifyContent={"center"}>
-        {shuffledIcons.map((icon, index) => (
-          <Grid item xs={1.5} sm={1} key={index}>
-            <Icon sx={{ fontSize: { xs: '10vw', sm: '5vw' }, padding: '0 1vw' }}>
-              <img src={icon} style={{ maxWidth: "100%" }} alt="" />
-            </Icon>
-          </Grid>
+    <div className="slider-container" style={{ padding: '20vh 0 15vh'}}>
+      <Slider
+        {...settings}>
+        {skills.map((skill, index) => (
+          <Typography
+            key={index}
+            color={"#989898"}
+            variant="h4"
+            fontFamily={"Sofia"}
+            fontWeight={"bold"}
+            textAlign={"center"}
+          >
+            {skill}
+          </Typography>
         ))}
-      </Grid>
-    </Box>
+      </Slider>
+    </div>
   );
-};
+}
 
 export default Skills;

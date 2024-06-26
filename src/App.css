@@ -2,7 +2,15 @@ body {
   background: rgb(0, 0, 0);
   overflow-x: hidden;
   color: 'white';
+  border: 0;
+  padding: 0;
 }
+
+/* body {
+  overflow-x: hidden;
+  border: 0;
+  padding: 0;
+} */
 
 :root {
   --d: 700ms;

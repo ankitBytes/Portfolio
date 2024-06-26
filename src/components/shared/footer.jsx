@@ -1,26 +1,20 @@
 import { Box, Container, Stack, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router";
+
 import SideBar from "./sideBar";
 
 const Footer = () => {
+
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
         padding: "10vh 0",
-        borderTop: "1px solid #989898",
-        borderLeft: "1px solid #989898",
-        borderRadius: "4rem 0 0 0",
-        marginTop: "5vh",
       }}
     >
-      <Container
-        maxWidth="xl"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-        }}
-      >
-        <Stack direction={"row"} justifyContent={"space-evenly"}>
+      <Container maxWidth="xl">
+        <Stack direction={{sm: "row", xs: 'column' }} justifyContent={"space-between"} spacing={2}>
           <Stack spacing={2} alignItems={"center"}>
             <Typography
               color={"#fff"}
@@ -52,6 +46,7 @@ const Footer = () => {
                     color: "black",
                   },
                 }}
+                onClick={() => navigate('/contact')}
               >
                 Contact Me
               </Button>
@@ -80,7 +75,14 @@ const Footer = () => {
             </Typography>
           </Stack>
         </Stack>
-        <Box sx={{ paddingTop: "5vh", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Box
+          sx={{
+            paddingTop: "5vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <SideBar direction={"row"} />
         </Box>
       </Container>

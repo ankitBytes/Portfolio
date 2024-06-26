@@ -1,7 +1,9 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import { createTheme, responsiveFontSizes, ThemeProvider } from "@mui/material";
+import { AuthContextProvider } from "./context/authContext.jsx";
+import { border, borderColor, color } from "@mui/system";
 
 let theme = createTheme({
   typography: {
@@ -10,14 +12,57 @@ let theme = createTheme({
       textTransform: "none",
     },
   },
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiInput-underline:before': {
+            borderBottomColor: 'white', // Border color
+          },
+          '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+            borderBottomColor: 'white', // Border color on hover
+          },
+          '& .MuiInput-underline:after': {
+            borderBottomColor: 'white', // Border color when focused
+          },
+          '& .MuiInputBase-input': {
+            color: 'white', // Text color
+          },
+          '& .MuiFormHelperText-root': {
+            color: 'white', // Helper text color
+          },
+          '& .MuiInputLabel-root': {
+            color: 'white', // Label color
+          },
+          // Ensuring multiline text area is also styled
+          '& .MuiInputBase-inputMultiline': {
+            color: 'white', // Text color for multiline input
+          },
+        },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          '& .MuiInputBase': {
+            '& fieldset': {
+              borderColor: 'white'
+            }
+          }
+        }
+      }
+    }
+  },
 });
 
 theme = responsiveFontSizes(theme);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <AuthContextProvider>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </AuthContextProvider>
   </React.StrictMode>
 );

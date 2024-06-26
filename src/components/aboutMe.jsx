@@ -1,13 +1,41 @@
-import { Box, Container, Typography, Stack } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Stack,
+  ImageListItem,
+  ImageList,
+} from "@mui/material";
+import { onSnapshot, collection } from "firebase/firestore";
+import { db } from "../firebase/firebase";
+
+import { useEffect, useState } from "react";
 
 import Heading from "./shared/heading";
 import Content from "./shared/content";
 
 import SideImg from "../assets/developerAbout.jpg";
+import Image from "../assets/IMG_4090.jpg";
+
+function srcset(image, size, rows = 1, cols = 1) {
+  return {
+    src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
+    srcSet: `${image}?w=${size * cols}&h=${size *
+      rows}&fit=crop&auto=format&dpr=2 2x`,
+  };
+}
 
 const About = () => {
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    onSnapshot(collection(db, "About"), (snapshot) => {
+      const aboutData = snapshot.docs.map((doc) => doc.data());
+      setImages(aboutData[0].imageData);
+    });
+  }, []);
   return (
-    <Box>
+    <Box id="about">
       <Container
         sx={{
           display: "flex",
@@ -20,55 +48,52 @@ const About = () => {
           spacing={2}
           alignItems={"center"}
           justifyContent={"space-between"}
-          direction={{ sm: "row", xs: "column" }}
+          direction={{ xs: "column" }}
         >
           <Box>
-            <Heading text={"About"} align={"start"} />
-            <Content
-              text={
-                "Hello! I'm Ankit Kumar Sahu, a final-year B.Tech Computer Science student at Silicon University and a freelance full stack web developer. I specialize in ReactJS, NodeJS, ExpressJS, MongoDB, and Firebase. With a passion for creating dynamic web solutions, I thrive on delivering high-quality projects. Explore my portfolio and let's connect to build something amazing!"
-              }
-            />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              padding: {xs: '2vh 0', sm: '0'}
-            }}
-          >
-            <Box
-              sx={{
-                background: "#1e1e1e",
-                maxWidth: {sm: "70%", xs: '100%'},
-                padding: "2vh 1vw",
-                borderRadius: "10px",
-                boxShadow:
-                  "rgba(222, 222, 222, 0.1) 0px 8px 24px, rgba(222, 222, 222, 0.1) 0px 16px 56px, rgba(222, 222, 222, 0.1) 0px 24px 80px",
-
-                "@keyframes floating": {
-                  "0%": {
-                    transform: "translateY(0)",
-                  },
-                  "50%": {
-                    transform: "translateY(-5px)",
-                  },
-                  "100%": {
-                    transform: "translate(0)",
-                  },
-                },
-
-                animation: "floating 3s ease-in-out infinite",
-              }}
-            >
-              <img
-                src={SideImg}
-                alt=""
-                style={{ width: "100%", borderRadius: "10px" }}
+            <Heading text={"About Me"} align={"start"} />
+            <Stack spacing={2}>
+              <Content
+                text={
+                  "Hello! I'm Ankit Kumar Sahu, a final-year B.Tech Computer Science student at Silicon University and a freelance full-stack web developer. My journey in web development began with a curiosity for technology and a drive to create impactful digital solutions. Over the years, I've honed my skills in ReactJS, NodeJS, ExpressJS, MongoDB, and Firebase, enabling me to develop dynamic and efficient web applications."
+                }
               />
-            </Box>
+              <Content
+                text={
+                  "I thrive on the challenge of turning complex problems into seamless user experiences and am committed to delivering high-quality projects that exceed client expectations. Whether you're looking to build a robust backend, a responsive frontend, or a full-stack solution, I have the expertise to bring your vision to life."
+                }
+              />
+              <Content
+                text={
+                  "Explore my portfolio to see some of my work, and let's connect to create something amazing together!"
+                }
+              />
+            </Stack>
           </Box>
+          <ImageList
+            sx={{ width: "100%" }}
+            variant="quilted"
+            cols={4}
+            rows={2}
+            gap={8}
+            xs={{ cols: 1, rows: 1 }}
+          >
+            {images?.map((item) => (
+              <ImageListItem
+                key={item.image}
+                cols={item.cols || 1}
+                rows={item.rows || 1}
+              >
+                <img
+                  src={item.image}
+                  srcSet={`${item.image}?w=121&h=${item.rows *
+                    121}&fit=crop&auto=format&dpr=2 2x`}
+                  alt={item.alt}
+                  loading="lazy"
+                />
+              </ImageListItem>
+            ))}
+          </ImageList>
         </Stack>
       </Container>
     </Box>

@@ -1,53 +1,69 @@
 import {
   Box,
   Container,
-  Stack,
-  Grid,
   Typography,
   Modal,
   Button,
+  ImageList,
+  ImageListItem,
+  Stack,
+  useMediaQuery,
+  useTheme
 } from "@mui/material";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { db } from "../firebase/firebase";
+import {
+  collection,
+  onSnapshot,
+} from "firebase/firestore";
 
 import CloseIcon from "@mui/icons-material/Close";
 
 import Heading from "./shared/heading";
 
-import Image from "../assets/background.png";
-import { maxHeight } from "@mui/system";
-
 const Projects = () => {
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up('md'));
+  const isSm = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isXs = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = async () =>
+      await onSnapshot(collection(db, "Projects"), (snapshot) => {
+        const updatedList = snapshot.docs.map((doc) => doc.data());
+        setProjects(updatedList);
+        console.log(updatedList);
+      });
+    return () => unsubscribe();
+  }, []);
+
+  const getCols = () => {
+    if (isMd) return 3;
+    if (isSm) return 2;
+    if (isXs) return 1;
+    return 3; // default to 3 columns for larger screens if none of the conditions match
+  };
+
   return (
-    <Box sx={{ padding: "10vh 0" }}>
+    <Box sx={{ padding: "10vh 0" }} id="projects">
       <Container maxWidth="xl">
         <Heading text={"Previous Works"} align={"start"} />
-        <Grid
-          container
-          gap={{md: 2, sm: 1}}
-          sx={{ padding: "4vh 0" }}
-          display={"flex"}
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          {projects.map((project, index) => (
-            <Grid
-              item
-              xs={12}
-              sm={3.9}
-              key={index}
-              className="projectsImages"
-            >
-              <ProjectCard projectDetail={project} />
-            </Grid>
+        <ImageList variant="masonry" cols={getCols()} gap={8}>
+          {projects.map((item, i) => (
+            <ImageListItem key={`${item.image}-${i}`}>
+              <ProjectCard projectDetail={item} />
+            </ImageListItem>
           ))}
-        </Grid>
+        </ImageList>
       </Container>
     </Box>
   );
 };
 
-const ProjectCard = ({ projectDetail }) => {
+export const ProjectCard = ({ projectDetail }) => {
   const [open, setOpen] = useState(false);
 
   const handleModalOpen = () => setOpen(true);
@@ -70,8 +86,10 @@ const ProjectCard = ({ projectDetail }) => {
     >
       <Box sx={{ position: "relative" }}>
         <img
-          src={projectDetail.image}
+          src={projectDetail.coverImage}
           style={{ width: "100%", position: "relative", borderRadius: "1rem" }}
+          loading="lazy"
+          srcSet={`${projectDetail.coverImage}?w=248&fit=crop&auto=format&dpr=2 2x`}
         />
         <Box
           className="infoBox"
@@ -115,7 +133,7 @@ const ProjectCard = ({ projectDetail }) => {
             {projectDetail.projectDescription}
           </Typography>
           <Stack spacing={1} direction={"row"} padding={"1rem 0"}>
-            {projectDetail.skills.map((skill, i) => (
+            {projectDetail.skillSet?.map((skill, i) => (
               <Button
                 key={i}
                 sx={{
@@ -149,10 +167,10 @@ const ProjectCard = ({ projectDetail }) => {
 
 ProjectCard.propTypes = {
   projectDetail: PropTypes.shape({
-    image: PropTypes.string.isRequired,
+    coverImage: PropTypes.string.isRequired,
     projectTitle: PropTypes.string.isRequired,
     projectDescription: PropTypes.string.isRequired,
-    skills: PropTypes.arrayOf(PropTypes.string).isRequired,
+    // skillSet: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
 };
 
@@ -202,8 +220,6 @@ const ProjectModal = ({ projectDetail, open, setOpen }) => {
         }}
       >
         <Box sx={style} onClick={(e) => e.stopPropagation()}>
-          {" "}
-          {/* Prevent the modal box from closing when clicked */}
           <CloseIcon
             onClick={handleButtonClick}
             style={{
@@ -223,7 +239,7 @@ const ProjectModal = ({ projectDetail, open, setOpen }) => {
             {projectDetail.projectTitle}
           </Typography>
           <Stack spacing={1} direction={"row"} paddingTop={"1vh"}>
-            {projectDetail.skills.map((skill, i) => (
+            {projectDetail.skillSet.map((skill, i) => (
               <Button
                 key={i}
                 sx={{
@@ -233,7 +249,6 @@ const ProjectModal = ({ projectDetail, open, setOpen }) => {
                   background: "#2b2a2a46",
                   fontWeight: "bold",
                   fontFamily: "lato",
-                  display: i < 3 ? "block" : "none",
 
                   "&:hover": {
                     background: "#2b2a2a46",
@@ -244,13 +259,19 @@ const ProjectModal = ({ projectDetail, open, setOpen }) => {
               </Button>
             ))}
           </Stack>
-          <Typography id="modal-modal-description" sx={{ mt: 2, whiteSpace: 'pre-wrap' }}>
+          <Typography
+            id="modal-modal-description"
+            sx={{ mt: 2, whiteSpace: "pre-wrap" }}
+          >
             {projectDetail.projectDescription}
           </Typography>
-          <img
-            src={projectDetail.image}
-            style={{ width: "100%", padding: "3vh 0", maxHeight: "80vh" }}
+          {projectDetail?.downloadURLs.map((images, i) => (
+            <img
+            src={images}
+              style={{ width: "100%", padding: "3vh 0", maxHeight: "80vh" }}
+              key={i}
           />
+          ))}
         </Box>
       </Modal>
     </Box>
@@ -259,62 +280,14 @@ const ProjectModal = ({ projectDetail, open, setOpen }) => {
 
 ProjectModal.propTypes = {
   projectDetail: PropTypes.shape({
-    image: PropTypes.string.isRequired,
+    coverImage: PropTypes.string.isRequired,
     projectTitle: PropTypes.string.isRequired,
     projectDescription: PropTypes.string.isRequired,
-    skills: PropTypes.object.isRequired
+    // skillSet: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
 };
 
-const projects = [
-  {
-    image: Image,
-    projectTitle: "Trial",
-    projectDescription: `
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ultricies rutrum nisl, sed tincidunt orci aliquet sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin eget purus euismod, feugiat lorem ac, pretium neque. Phasellus a mollis purus. Vivamus cursus porta justo, eget tristique dolor faucibus vitae. Donec placerat dolor erat, vitae iaculis nibh consectetur id. Quisque volutpat nulla non lorem mattis lacinia. Fusce interdum, lectus quis fermentum luctus, lorem est lacinia odio, et egestas eros elit quis libero. Pellentesque tincidunt sapien id odio congue, quis dapibus lectus consectetur. Pellentesque facilisis, nisl ac molestie euismod, nisi orci ultrices mauris, id tristique ipsum lacus eu augue. Nunc maximus at nulla vitae tincidunt. Mauris molestie efficitur porttitor. Maecenas ut magna at augue aliquet tempus.
-    
-    Quisque sed nisl purus. Etiam tortor leo, auctor non eros vel, maximus blandit ligula. Maecenas hendrerit odio sed odio sodales, nec scelerisque est hendrerit. Phasellus erat mauris, mollis sit amet finibus id, pharetra vel mi. Suspendisse et molestie urna. Nam pellentesque sed ante a volutpat. Ut placerat tempus diam in malesuada. Phasellus et odio sit amet ligula accumsan porta.
-    
-    Ut purus turpis, pellentesque eu porttitor sodales, gravida in magna. Praesent tincidunt placerat iaculis. Quisque facilisis elit ac augue vehicula tincidunt et id dolor. Nullam dictum imperdiet suscipit. Nunc ut felis sed diam maximus porta a eget diam. Vivamus suscipit suscipit faucibus. Duis pellentesque orci non est blandit facilisis. Sed consequat lectus ac ullamcorper faucibus. Mauris quis nisi vel erat lobortis ornare eget porta dui. Aliquam non erat odio. Quisque finibus convallis eros ac pulvinar.`,
-    skills: ["ReactJs", "NodeJs", "Firebase"],
-  },
-  {
-    image: Image,
-    projectTitle: "Trial",
-    projectDescription:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque a, suscipit natus optio voluptatibus vero, accusantium cupiditate pariatur expedita beatae qui consequatur totam culpa magni nemo, maiores enim debitis error",
-    skills: ["ReactJs", "NodeJs", "Firebase", "ExpressJs"],
-  },
-  {
-    image: Image,
-    projectTitle: "Trial",
-    projectDescription:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque a, suscipit natus optio voluptatibus vero, accusantium cupiditate pariatur expedita beatae qui consequatur totam culpa magni nemo, maiores enim debitis error",
-    skills: ["ReactJs", "NodeJs", "Firebase"],
-  },
-  {
-    image: Image,
-    projectTitle: "Trial",
-    projectDescription:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque a, suscipit natus optio voluptatibus vero, accusantium cupiditate pariatur expedita beatae qui consequatur totam culpa magni nemo, maiores enim debitis error",
-    skills: ["ReactJs", "NodeJs", "Firebase"],
-  },
-  {
-    image: Image,
-    projectTitle: "Trial",
-    projectDescription:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque a, suscipit natus optio voluptatibus vero, accusantium cupiditate pariatur expedita beatae qui consequatur totam culpa magni nemo, maiores enim debitis error",
-    skills: ["ReactJs", "NodeJs", "Firebase"],
-  },
-  {
-    image: Image,
-    projectTitle: "Trial",
-    projectDescription:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque a, suscipit natus optio voluptatibus vero, accusantium cupiditate pariatur expedita beatae qui consequatur totam culpa magni nemo, maiores enim debitis error",
-    skills: ["ReactJs", "NodeJs", "Firebase"],
-  },
-];
-
 export default Projects;
+

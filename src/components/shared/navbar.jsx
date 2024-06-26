@@ -24,6 +24,16 @@ export default function Navbar() {
 
   const navigate = useNavigate();
 
+  const handleScrollSection = (e) => {
+    const element = document.getElementById(e);
+    console.log(element);
+
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setMenu(false);
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -56,8 +66,8 @@ export default function Navbar() {
           </Typography>
           <Stack direction={"row"} display={{ xs: "none", sm: "flex" }}>
             <Typography sx={buttons} className="navButton" onClick={() => navigate("/")}>Home</Typography>
-            <Typography sx={buttons} className="navButton">About</Typography>
-            <Typography sx={buttons} className="navButton">Projects</Typography>
+            <Typography sx={buttons} className="navButton" onClick={() => handleScrollSection("about")}>About</Typography>
+            <Typography sx={buttons} className="navButton" onClick={() => handleScrollSection("projects")}>Projects</Typography>
             <Typography sx={buttons} className="navButton"  onClick={() => navigate("/contact")}>Contact</Typography>
           </Stack>
           <Box display={{ xs: "block", sm: "none" }}>
@@ -130,7 +140,7 @@ export default function Navbar() {
                 justifyContent={"center"}
               >
                 <Typography sx={buttons} onClick={() => navigate("/")}>Home</Typography>
-                <Typography sx={buttons}>About</Typography>
+                <Typography sx={buttons} onClick={() => handleScrollSection("about")}>About</Typography>
                 <Typography sx={buttons}>Projects</Typography>
                 <Typography sx={buttons} onClick={() => navigate("/contact")}>Contact</Typography>
               </Stack>

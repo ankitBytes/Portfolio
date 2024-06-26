@@ -27,7 +27,7 @@ const Contact = () => {
           flexDirection: { sm: "row", xs: "column" },
         }}
       >
-        <Box
+        <Stack
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -36,6 +36,7 @@ const Contact = () => {
             padding: "5vh 0",
             maxWidth: { xs: "100%", sm: "50%" },
           }}
+          spacing={2}
         >
           <Heading text={"Get in touch"} />
           <Content
@@ -69,7 +70,7 @@ const Contact = () => {
               </Typography>
             </Stack>
           </Box>
-        </Box>
+        </Stack>
         <AboutMeCard />
       </Container>
       {/* <SideText /> */}

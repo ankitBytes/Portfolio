@@ -7,14 +7,14 @@ import Skills from "../components/skills";
 
 const Home = () => {
     return(
-        <>
+        <div className="body">
             <HeroSection />
             <About />
+            <Skills />
             <Projects />
             <Education />
             <Jobs />
-            <Skills />
-        </>
+        </div>
     )
 }
 

@@ -1,4 +1,5 @@
 import { Typography } from "@mui/material";
+import PropTypes from "prop-types"
 
 const Heading = ({ text, align }) => {
   return (
@@ -10,9 +11,14 @@ const Heading = ({ text, align }) => {
       fontWeight={600}
       color={"#A020F0"}
     >
-      {text} -&gt;
+      {text}
     </Typography>
   );
 };
+
+Heading.prototype = {
+  text: PropTypes.string.isRequired,
+  align: PropTypes.string,
+}
 
 export default Heading;
