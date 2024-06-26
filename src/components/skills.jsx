@@ -16,7 +16,7 @@ function Skills() {
     const unsubscribe = onSnapshot(collection(db, "Skills"), (snapshot) => {
       const updatedList = snapshot.docs.map((doc) => doc.data().skills).flat();
       setSkills(updatedList);
-      console.log(updatedList);
+      // console.log(updatedList);
     });
 
     return () => unsubscribe();
