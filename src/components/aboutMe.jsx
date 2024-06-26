@@ -14,17 +14,6 @@ import { useEffect, useState } from "react";
 import Heading from "./shared/heading";
 import Content from "./shared/content";
 
-import SideImg from "../assets/developerAbout.jpg";
-import Image from "../assets/IMG_4090.jpg";
-
-function srcset(image, size, rows = 1, cols = 1) {
-  return {
-    src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
-    srcSet: `${image}?w=${size * cols}&h=${size *
-      rows}&fit=crop&auto=format&dpr=2 2x`,
-  };
-}
-
 const About = () => {
   const [images, setImages] = useState([]);
 

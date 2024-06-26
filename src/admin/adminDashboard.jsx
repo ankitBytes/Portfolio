@@ -14,7 +14,6 @@ import { useState, useEffect } from "react";
 
 import Content from "../components/shared/content";
 import { ProjectCard } from "../components/projects";
-import Image from "../assets/background.png";
 import { storage } from "../firebase/firebase";
 import {
   ref,
