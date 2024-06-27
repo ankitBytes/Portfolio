@@ -57,7 +57,7 @@ const Contact = () => {
                 sahuankitkumar60@gmail.com
               </Typography>
             </Stack>
-            <Stack direction={"row"} spacing={3} alignItems={"center"}>
+            {/* <Stack direction={"row"} spacing={3} alignItems={"center"}>
               <LocalPhoneTwoToneIcon color={"white"} sx={{ color: "white" }} />
               <Typography
                 variant="h5"
@@ -68,7 +68,7 @@ const Contact = () => {
               >
                 +91 7846996759
               </Typography>
-            </Stack>
+            </Stack> */}
           </Box>
         </Stack>
         <AboutMeCard />
