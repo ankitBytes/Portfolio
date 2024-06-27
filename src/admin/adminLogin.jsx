@@ -65,7 +65,7 @@ const AdminLogin = () => {
   };
   return (
     <>
-      <Box sx={{ background: 'white'}}>
+      <Box>
         <Container maxWidth="xl" sx={styles.container}>
           {/* <Typography
               variant="h4"
