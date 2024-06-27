@@ -8,15 +8,12 @@ import {
   ImageListItem,
   Stack,
   useMediaQuery,
-  useTheme
+  useTheme,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { db } from "../firebase/firebase";
-import {
-  collection,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -24,9 +21,9 @@ import Heading from "./shared/heading";
 
 const Projects = () => {
   const theme = useTheme();
-  const isMd = useMediaQuery(theme.breakpoints.up('md'));
-  const isSm = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  const isXs = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMd = useMediaQuery(theme.breakpoints.up("md"));
+  const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const isXs = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [projects, setProjects] = useState([]);
 
@@ -267,10 +264,10 @@ const ProjectModal = ({ projectDetail, open, setOpen }) => {
           </Typography>
           {projectDetail?.downloadURLs.map((images, i) => (
             <img
-            src={images}
+              src={images}
               style={{ width: "100%", padding: "3vh 0", maxHeight: "80vh" }}
               key={i}
-          />
+            />
           ))}
         </Box>
       </Modal>
@@ -290,4 +287,3 @@ ProjectModal.propTypes = {
 };
 
 export default Projects;
-

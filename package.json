@@ -25,6 +25,7 @@
     "@tiptap/pm": "^2.4.0",
     "@tiptap/react": "^2.4.0",
     "@tiptap/starter-kit": "^2.4.0",
+    "dotenv": "^16.4.5",
     "firebase": "^10.12.2",
     "gsap": "^3.12.4",
     "mui-chips-input": "^2.1.4",
