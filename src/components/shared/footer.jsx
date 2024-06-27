@@ -61,7 +61,7 @@ const Footer = () => {
               textTransform={"uppercase"}
               variant="body1"
             >
-              ©2023 All Rights Reserved.
+              ©{`${new Date().getFullYear()}`} All Rights Reserved.
             </Typography>
             <Typography
               color={"#fff"}
