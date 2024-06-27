@@ -28,14 +28,11 @@ const Projects = () => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "Projects"),
-      (snapshot) => {
-        const updatedList = snapshot.docs.map((doc) => doc.data());
-        setProjects(updatedList);
-        console.log(updatedList);
-      }
-    );
+    const unsubscribe = onSnapshot(collection(db, "Projects"), (snapshot) => {
+      const updatedList = snapshot.docs.map((doc) => doc.data());
+      setProjects(updatedList);
+      console.log(updatedList);
+    });
     return () => unsubscribe();
   }, []);
 
@@ -50,9 +47,13 @@ const Projects = () => {
     <Box sx={{ padding: "10vh 0" }} id="projects">
       <Container maxWidth="xl">
         <Heading text={"Previous Works"} align={"start"} />
-        <ImageList variant="masonry" cols={getCols()} gap={8}>
+        <ImageList variant="masonry" cols={getCols()} gap={8} sx={{ overflowX: 'hidden'}}>
           {projects.map((item, i) => (
-            <ImageListItem key={`${item.image}-${i}`}>
+            <ImageListItem
+              key={`${item.image}-${i}`}
+              data-aos="fade-left"
+              data-aos-duration={1000 * i + 1000}
+            >
               <ProjectCard projectDetail={item} />
             </ImageListItem>
           ))}

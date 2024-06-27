@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./App.css";
+import Aos from "aos";
+import "aos/dist/aos.css";
 import MouseHover from "./components/shared/mouseHover";
 import Home from "./pages/homePage";
 import Contact from "./pages/contact";
@@ -9,11 +11,17 @@ import Footer from "./components/shared/footer";
 import AdminLayout from "./admin/adminLayout";
 import AdminLogin from './admin/adminLogin';
 import AdminDashboard from "./admin/adminDashboard";
+import { useEffect } from "react";
 
 import { UserAuth } from "./context/authContext";
 import { Navigate, useLocation } from "react-router-dom";
 
 function App() {
+  useEffect(() => {
+    Aos.init();
+    Aos.refresh();
+  }, []);
+  
   return (
     <>
       <MouseHover />

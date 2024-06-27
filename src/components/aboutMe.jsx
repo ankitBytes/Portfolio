@@ -41,7 +41,7 @@ const About = () => {
         >
           <Box>
             <Heading text={"About Me"} align={"start"} />
-            <Stack spacing={2}>
+            <Stack spacing={2} data-aos="fade-up">
               <Content
                 text={
                   "Hello! I'm Ankit Kumar Sahu, a final-year B.Tech Computer Science student at Silicon University and a freelance full-stack web developer. My journey in web development began with a curiosity for technology and a drive to create impactful digital solutions. Over the years, I've honed my skills in ReactJS, NodeJS, ExpressJS, MongoDB, and Firebase, enabling me to develop dynamic and efficient web applications."
@@ -67,11 +67,13 @@ const About = () => {
             gap={8}
             xs={{ cols: 1, rows: 1 }}
           >
-            {images?.map((item) => (
+            {images?.map((item, i) => (
               <ImageListItem
                 key={item.image}
                 cols={item.cols || 1}
                 rows={item.rows || 1}
+                data-aos="fade-right"
+                data-aos-duration={1000 * i + 1000}
               >
                 <img
                   src={item.image}

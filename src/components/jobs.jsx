@@ -56,16 +56,16 @@ const Template = ({ HeadingText, content }) => {
         },
       }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" data-aos-offset="500">
         <Heading text={HeadingText} align={"left"} />
         <Timeline>
-          {content.map((position, index) => (
-            <TimelineItem key={index}>
+          {content.map((position, i) => (
+            <TimelineItem key={i}>
               <TimelineSeparator>
                 <TimelineDot variant="outlined" />
                 <TimelineConnector />
               </TimelineSeparator>
-              <Stack padding={"0 1rem"} marginTop={"1rem"} key={index}>
+              <Stack padding={"0 1rem"} marginTop={"1rem"} key={i}>
                 <Box>
                   <Typography
                     color={"#fafafa"}
@@ -73,6 +73,8 @@ const Template = ({ HeadingText, content }) => {
                     fontFamily={"Syncopate"}
                     textTransform={"uppercase"}
                     fontWeight={550}
+                    data-aos="fade-left"
+                    data-aos-duration={2000 * i + 1000}
                   >
                     {position.title}
                   </Typography>
@@ -82,6 +84,9 @@ const Template = ({ HeadingText, content }) => {
                     fontFamily={"Syncopate"}
                     textTransform={"uppercase"}
                     fontWeight={550}
+                    data-aos="fade-left"
+                    data-aos-duration={2000 * i + 1200}
+                    data-aos-delay={i === 0 ? 300 : 300 * i}
                   >
                     {position.schoolName}
                   </Typography>
@@ -92,6 +97,9 @@ const Template = ({ HeadingText, content }) => {
                     textTransform={"uppercase"}
                     fontWeight={550}
                     display={position.location ? "block" : "none"}
+                    data-aos="fade-left"
+                    data-aos-duration={2000 * i + 1400}
+                    data-aos-delay={i === 0 ? 300 : 300 * i}
                   >
                     {position.location}
                   </Typography>
@@ -101,11 +109,19 @@ const Template = ({ HeadingText, content }) => {
                     fontFamily={"Syncopate"}
                     textTransform={"uppercase"}
                     fontWeight={550}
+                    data-aos="fade-left"
+                    data-aos-duration={2000 * i + 1600}
+                    data-aos-delay={i === 0 ? 300 : 300 * i}
                   >
                     {position.duration}
                   </Typography>
                 </Box>
-                <Box sx={{ padding: "1rem 0 0 0" }}>
+                <Box
+                  sx={{ padding: "1rem 0 0 0" }}
+                  data-aos="fade-left"
+                  data-aos-duration={2000 * i + 1800}
+                  data-aos-delay={i === 0 ? 300 : 300 * i}
+                >
                   <Content text={position.description} />
                 </Box>
               </Stack>
