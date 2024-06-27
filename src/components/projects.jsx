@@ -28,12 +28,14 @@ const Projects = () => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = async () =>
-      await onSnapshot(collection(db, "Projects"), (snapshot) => {
+    const unsubscribe = onSnapshot(
+      collection(db, "Projects"),
+      (snapshot) => {
         const updatedList = snapshot.docs.map((doc) => doc.data());
         setProjects(updatedList);
-        console.log("projects", updatedList);
-      });
+        console.log(updatedList);
+      }
+    );
     return () => unsubscribe();
   }, []);
 
