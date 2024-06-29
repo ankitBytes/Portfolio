@@ -14,10 +14,13 @@ import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { db } from "../firebase/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
+import VanillaTilt from "vanilla-tilt";
 
 import CloseIcon from "@mui/icons-material/Close";
 
 import Heading from "./shared/heading";
+
+import Image from "../../public/webpage.png";
 
 const Projects = () => {
   const theme = useTheme();
@@ -36,6 +39,20 @@ const Projects = () => {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const tiltElements = document.querySelectorAll(".tilt");
+    VanillaTilt.init(tiltElements, {
+      max: 15,
+      perspective: 1400,
+      easing: "cubic-bezier(.03,.98,.52,.99)",
+      speed: 1200,
+      glare: true,
+      "max-glare": 0.2,
+      "transform-style": "preserve-3d",
+      transform: 'translateZ(20px)'
+    });
+  }, [projects])
+
   const getCols = () => {
     if (isMd) return 3;
     if (isSm) return 2;
@@ -47,7 +64,12 @@ const Projects = () => {
     <Box sx={{ padding: "10vh 0" }} id="projects">
       <Container maxWidth="xl">
         <Heading text={"Previous Works"} align={"start"} />
-        <ImageList variant="masonry" cols={getCols()} gap={8} sx={{ overflowX: 'hidden'}}>
+        <ImageList
+          variant="masonry"
+          cols={getCols()}
+          gap={10}
+          sx={{ overflow: "hidden" }}
+        >
           {projects.map((item, i) => (
             <ImageListItem
               key={`${item.image}-${i}`}
@@ -70,9 +92,12 @@ export const ProjectCard = ({ projectDetail }) => {
 
   return (
     <Box
+      className="tilt"
       sx={{
         position: "relative",
         transition: "all 0.35s ease-in-out",
+        padding: "1rem",
+        border: "1px solid #989898",
         "&:hover .infoBox": {
           opacity: 1,
           transform: "scale(1)",
@@ -84,25 +109,20 @@ export const ProjectCard = ({ projectDetail }) => {
       }}
       onClick={handleModalOpen}
     >
-      <Box sx={{ position: "relative" }}>
+      <Stack spacing={1} sx={{ position: "relative" }}>
         <img
           src={projectDetail.coverImage}
-          style={{ width: "100%", position: "relative", borderRadius: "1rem" }}
+          style={{ width: "100%", position: "relative" }}
           loading="lazy"
           srcSet={`${projectDetail.coverImage}?w=248&fit=crop&auto=format&dpr=2 2x`}
         />
-        <Box
-          className="infoBox"
+        <Stack
           sx={{
-            position: "absolute",
-            maxHeight: "80%",
-            maxWidth: "80%",
             top: "10%",
             left: "10%",
-            opacity: 0,
-            transform: "scale(0.8)",
             transition: "opacity 0.3s ease, transform 0.3s ease",
           }}
+          spacing={1}
         >
           <Typography
             color={"#fff"}
@@ -111,10 +131,13 @@ export const ProjectCard = ({ projectDetail }) => {
             fontFamily={"Syncopate"}
             fontWeight={600}
             sx={{
-              whiteSpace: "nowrap",
+              whiteSpace: "normal",
               overflow: "hidden",
               textOverflow: "ellipsis",
-              maxWidth: "100%",
+              display: '-webkit-box',
+              WebkitBoxOrient: 'vertical',
+              WebkitLineClamp: 2,
+              maxHeight: '4em'
             }}
           >
             {projectDetail.projectTitle}
@@ -124,10 +147,13 @@ export const ProjectCard = ({ projectDetail }) => {
             variant="body1"
             fontFamily={"Laso"}
             sx={{
-              whiteSpace: "nowrap",
+              whiteSpace: "normal",
               overflow: "hidden",
               textOverflow: "ellipsis",
-              maxWidth: "100%",
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 3,
+              maxHeight: "4.5em", // Adjust as needed for your font and line height
             }}
           >
             {projectDetail.projectDescription}
@@ -159,8 +185,8 @@ export const ProjectCard = ({ projectDetail }) => {
             open={open}
             setOpen={setOpen}
           />
-        </Box>
-      </Box>
+        </Stack>
+      </Stack>
     </Box>
   );
 };
@@ -288,5 +314,54 @@ ProjectModal.propTypes = {
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
 };
+
+// const projects = [
+//   {
+//     coverImage: Image,
+//     projectTitle: "Trial",
+//     projectDescription: `
+//     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ultricies rutrum nisl, sed tincidunt orci aliquet sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin eget purus euismod, feugiat lorem ac, pretium neque. Phasellus a mollis purus. Vivamus cursus porta justo, eget tristique dolor faucibus vitae. Donec placerat dolor erat, vitae iaculis nibh consectetur id. Quisque volutpat nulla non lorem mattis lacinia. Fusce interdum, lectus quis fermentum luctus, lorem est lacinia odio, et egestas eros elit quis libero. Pellentesque tincidunt sapien id odio congue, quis dapibus lectus consectetur. Pellentesque facilisis, nisl ac molestie euismod, nisi orci ultrices mauris, id tristique ipsum lacus eu augue. Nunc maximus at nulla vitae tincidunt. Mauris molestie efficitur porttitor. Maecenas ut magna at augue aliquet tempus.
+    
+//     Quisque sed nisl purus. Etiam tortor leo, auctor non eros vel, maximus blandit ligula. Maecenas hendrerit odio sed odio sodales, nec scelerisque est hendrerit. Phasellus erat mauris, mollis sit amet finibus id, pharetra vel mi. Suspendisse et molestie urna. Nam pellentesque sed ante a volutpat. Ut placerat tempus diam in malesuada. Phasellus et odio sit amet ligula accumsan porta.
+    
+//     Ut purus turpis, pellentesque eu porttitor sodales, gravida in magna. Praesent tincidunt placerat iaculis. Quisque facilisis elit ac augue vehicula tincidunt et id dolor. Nullam dictum imperdiet suscipit. Nunc ut felis sed diam maximus porta a eget diam. Vivamus suscipit suscipit faucibus. Duis pellentesque orci non est blandit facilisis. Sed consequat lectus ac ullamcorper faucibus. Mauris quis nisi vel erat lobortis ornare eget porta dui. Aliquam non erat odio. Quisque finibus convallis eros ac pulvinar.`,
+//     skillSet: ["ReactJs", "NodeJs", "Firebase"],
+//   },
+//   {
+//     coverImage: Image,
+//     projectTitle: "Trial",
+//     projectDescription:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque a, suscipit natus optio voluptatibus vero, accusantium cupiditate pariatur expedita beatae qui consequatur totam culpa magni nemo, maiores enim debitis error",
+//     skillSet: ["ReactJs", "NodeJs", "Firebase", "ExpressJs"],
+//   },
+//   {
+//     coverImage: Image,
+//     projectTitle: "Trial",
+//     projectDescription:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque a, suscipit natus optio voluptatibus vero, accusantium cupiditate pariatur expedita beatae qui consequatur totam culpa magni nemo, maiores enim debitis error",
+//     skillSet: ["ReactJs", "NodeJs", "Firebase"],
+//   },
+//   {
+//     coverImage: Image,
+//     projectTitle: "Trial",
+//     projectDescription:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque a, suscipit natus optio voluptatibus vero, accusantium cupiditate pariatur expedita beatae qui consequatur totam culpa magni nemo, maiores enim debitis error",
+//     skillSet: ["ReactJs", "NodeJs", "Firebase"],
+//   },
+//   {
+//     coverImage: Image,
+//     projectTitle: "Trial",
+//     projectDescription:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque a, suscipit natus optio voluptatibus vero, accusantium cupiditate pariatur expedita beatae qui consequatur totam culpa magni nemo, maiores enim debitis error",
+//     skillSet: ["ReactJs", "NodeJs", "Firebase"],
+//   },
+//   {
+//     coverImage: Image,
+//     projectTitle: "Trial",
+//     projectDescription:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque a, suscipit natus optio voluptatibus vero, accusantium cupiditate pariatur expedita beatae qui consequatur totam culpa magni nemo, maiores enim debitis error",
+//     skillSet: ["ReactJs", "NodeJs", "Firebase"],
+//   },
+// ];
 
 export default Projects;

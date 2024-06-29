@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import { createTheme, responsiveFontSizes, ThemeProvider } from "@mui/material";
 import { AuthContextProvider } from "./context/authContext.jsx";
-import { border, borderColor, color } from "@mui/system";
 
 let theme = createTheme({
   typography: {
@@ -16,42 +15,42 @@ let theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          '& .MuiInput-underline:before': {
-            borderBottomColor: 'white', // Border color
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "white",
+            },
+            "&:hover fieldset": {
+              borderColor: "white",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white",
+            },
           },
-          '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-            borderBottomColor: 'white', // Border color on hover
+          "& .MuiInput-underline:before": {
+            borderBottomColor: "white", // Border color
           },
-          '& .MuiInput-underline:after': {
-            borderBottomColor: 'white', // Border color when focused
+          "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
+            borderBottomColor: "white", // Border color on hover
           },
-          '& .MuiInputBase-input': {
-            color: 'white', // Text color
+          "& .MuiInput-underline:after": {
+            borderBottomColor: "white", // Border color when focused
           },
-          '& .MuiFormHelperText-root': {
-            color: 'white', // Helper text color
+          "& .MuiInputBase-input": {
+            color: "white", // Text color
           },
-          '& .MuiInputLabel-root': {
-            color: 'white', // Label color
+          "& .MuiFormHelperText-root": {
+            color: "white", // Helper text color
+          },
+          "& .MuiInputLabel-root": {
+            color: "white", // Label color
           },
           // Ensuring multiline text area is also styled
-          '& .MuiInputBase-inputMultiline': {
-            color: 'white', // Text color for multiline input
+          "& .MuiInputBase-inputMultiline": {
+            color: "white", // Text color for multiline input
           },
         },
       },
     },
-    MuiInputBase: {
-      styleOverrides: {
-        root: {
-          '& .MuiInputBase': {
-            '& fieldset': {
-              borderColor: 'white'
-            }
-          }
-        }
-      }
-    }
   },
 });
 

@@ -28,6 +28,7 @@ export default function MouseHover() {
           ".navButton",
           ".link",
           ".projectsImages",
+          ".tilt",
           {
             target: ".custom",
             options: {
