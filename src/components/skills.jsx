@@ -62,7 +62,7 @@ function Skills() {
     ]
   };
   return (
-    <div className="slider-container" style={{ padding: '20vh 0 15vh'}}>
+    <div className="slider-container" style={{ padding: '20vh 0 15vh', overflow: 'hidden'}}>
       <Slider
         {...settings}>
         {skills.map((skill, index) => (

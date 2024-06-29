@@ -14,6 +14,7 @@ import AdminLogin from './admin/adminLogin';
 import AdminDashboard from "./admin/adminDashboard";
 import { UserAuth } from "./context/authContext";
 import Loader from "./components/shared/loader";
+import { Box } from "@mui/material";
 
 const t0 = performance.now();
 
@@ -41,7 +42,7 @@ function App() {
   }
 
   return (
-    <>
+    <Box sx={{ overflowX: 'hidden'}}>
       <MouseHover />
       <BrowserRouter>
         <Routes>
@@ -62,7 +63,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </>
+    </Box>
   );
 }
 

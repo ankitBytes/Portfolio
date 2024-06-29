@@ -52,7 +52,7 @@ const Footer = () => {
               </Button>
             </Stack>
           </Stack>
-          <Stack>
+          <Stack alignItems={"center"}>
             <Typography
               color={"#fff"}
               fontFamily={"Syncopate"}
@@ -60,6 +60,7 @@ const Footer = () => {
               padding={"0 2vw"}
               textTransform={"uppercase"}
               variant="body1"
+              textAlign={"center"}
             >
               ©{`${new Date().getFullYear()}`} All Rights Reserved.
             </Typography>
