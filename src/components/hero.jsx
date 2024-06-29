@@ -1,7 +1,5 @@
 import { Box, Container, Stack, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router";
-import VanillaTilt from "vanilla-tilt";
-import { useState, useEffect } from "react";
 
 //components
 import SideBar from "./shared/sideBar";
@@ -10,19 +8,6 @@ import Image from "../assets/IMG_4090.jpg";
 const HeroSection = () => {
 
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const tiltElements = document.querySelectorAll(".tilt");
-  //   VanillaTilt.init(tiltElements, {
-  //     max: 15,
-  //     perspective: 1400,
-  //     easing: "cubic-bezier(.03,.98,.52,.99)",
-  //     speed: 1200,
-  //     glare: false,
-  //     "transform-style": "preserve-3d",
-  //     transform: 'translateZ(20px)'
-  //   });
-  // })
 
   return (
     <Box
@@ -156,7 +141,6 @@ export const HeadingText = ({ text }) => {
 export const AboutMeCard = () => {
   return (
     <Box
-      className="tilt"
       sx={{
         display: "flex",
         alignItems: "center",
@@ -165,7 +149,7 @@ export const AboutMeCard = () => {
         position: 'relative'
       }}
     >
-      <img src={Image} alt="" style={{ width: "50%", maxHeight: "80vh" }} />
+      <img src={Image} alt="" style={{ width: "50%", maxHeight: "80vh" }} loading="lazy" />
       <Box sx={{ textAlign: 'center' }}>
         <Typography
           color={"#fff"}

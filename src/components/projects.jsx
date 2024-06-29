@@ -47,7 +47,8 @@ const Projects = () => {
       glare: true,
       "max-glare": 0.2,
       "transform-style": "preserve-3d",
-      transform: 'translateZ(20px)'
+      transform: 'translateZ(20px)',
+      gyroscope: true
     });
   }, [projects])
 
@@ -95,11 +96,9 @@ export const ProjectCard = ({ projectDetail }) => {
         position: "relative",
         transition: "all 0.35s ease-in-out",
         padding: "1rem",
-        border: "1px solid #989898",
-        "&:hover .infoBox": {
-          opacity: 1,
-          transform: "scale(1)",
-          zIndex: 1000,
+        border: '0',
+        "&:hover": {
+          border: "1px solid #989898",
         },
         "&:active": {
           transform: "scale(0.9)",
@@ -214,7 +213,7 @@ const ProjectModal = ({ projectDetail, open, setOpen }) => {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "80vw",
-    bgcolor: "#ffffff46",
+    bgcolor: "#ffffff60",
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
@@ -294,6 +293,7 @@ const ProjectModal = ({ projectDetail, open, setOpen }) => {
               src={images}
               style={{ width: "100%", padding: "3vh 0", maxHeight: "80vh" }}
               key={i}
+              loading="lazy"
             />
           ))}
         </Box>

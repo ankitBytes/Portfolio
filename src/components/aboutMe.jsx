@@ -5,6 +5,7 @@ import {
   Stack,
   ImageListItem,
   ImageList,
+  Skeleton,
 } from "@mui/material";
 import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "../firebase/firebase";
@@ -16,13 +17,18 @@ import Content from "./shared/content";
 
 const About = () => {
   const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    onSnapshot(collection(db, "About"), (snapshot) => {
+    const unsubscribe = onSnapshot(collection(db, "About"), (snapshot) => {
       const aboutData = snapshot.docs.map((doc) => doc.data());
-      setImages(aboutData[0].imageData);
+      setImages(aboutData[0]?.imageData || []);
+      setLoading(false);
     });
+
+    return () => unsubscribe();
   }, []);
+
   return (
     <Box id="about">
       <Container
@@ -59,32 +65,35 @@ const About = () => {
               />
             </Stack>
           </Box>
-          <ImageList
-            sx={{ width: "100%" }}
-            variant="quilted"
-            cols={4}
-            rows={2}
-            gap={8}
-            xs={{ cols: 1, rows: 1 }}
-          >
-            {images?.map((item, i) => (
-              <ImageListItem
-                key={item.image}
-                cols={item.cols || 1}
-                rows={item.rows || 1}
-                data-aos="fade-right"
-                data-aos-duration={1000 * i + 1000}
-              >
-                <img
-                  src={item.image}
-                  srcSet={`${item.image}?w=121&h=${item.rows *
-                    121}&fit=crop&auto=format&dpr=2 2x`}
-                  alt={item.alt}
-                  loading="lazy"
-                />
-              </ImageListItem>
-            ))}
-          </ImageList>
+          {loading ? (
+            <Skeleton variant="rectangular" width="100%" height={600} />
+          ) : (
+            <ImageList
+              sx={{ width: "100%", padding: "2vh 0" }}
+              variant="quilted"
+              cols={4}
+              rowHeight={160}
+              gap={8}
+            >
+              {images?.map((item, i) => (
+                <ImageListItem
+                  key={item.image}
+                  cols={item.cols || 1}
+                  rows={item.rows || 1}
+                  data-aos="fade-right"
+                  data-aos-duration={`${1000 * i + 1000}`}
+                >
+                  <img
+                    src={item.image}
+                    srcSet={`${item.image}?w=121&h=${item.rows *
+                      121}&fit=crop&auto=format&dpr=2 2x`}
+                    alt={item.alt}
+                    loading="lazy"
+                  />
+                </ImageListItem>
+              ))}
+            </ImageList>
+          )}
         </Stack>
       </Container>
     </Box>
