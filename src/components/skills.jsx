@@ -25,6 +25,7 @@ function Skills() {
 
   const settings = {
     dots: false,
+    arrows: false,
     infinite: true,
     slidesToShow: 6,
     slidesToScroll: 1,

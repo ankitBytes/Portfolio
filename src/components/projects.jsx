@@ -20,8 +20,6 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import Heading from "./shared/heading";
 
-import Image from "../../public/webpage.png";
-
 const Projects = () => {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up("md"));
