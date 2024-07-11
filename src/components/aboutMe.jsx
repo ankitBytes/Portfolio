@@ -20,11 +20,14 @@ const About = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "About"), (snapshot) => {
-      const aboutData = snapshot.docs.map((doc) => doc.data());
-      setImages(aboutData[0]?.imageData || []);
-      setLoading(false);
-    });
+    const unsubscribe = onSnapshot(
+      collection(db, "About"),
+      async (snapshot) => {
+        const aboutData = await snapshot.docs.map((doc) => doc.data());
+        setImages(aboutData[0]?.imageData || []);
+        setLoading(false);
+      }
+    );
 
     return () => unsubscribe();
   }, []);
@@ -65,14 +68,10 @@ const About = () => {
               />
             </Stack>
           </Box>
-          {loading ? (
-            <Skeleton variant="rectangular" width="100%" height={600} />
-          ) : (
             <ImageList
               sx={{ width: "100%", padding: "2vh 0" }}
               variant="quilted"
               cols={4}
-              rowHeight={160}
               gap={8}
             >
               {images?.map((item, i) => (
@@ -83,17 +82,23 @@ const About = () => {
                   data-aos="fade-right"
                   data-aos-duration={`${1000 * i + 1000}`}
                 >
-                  <img
-                    src={item.image}
-                    srcSet={`${item.image}?w=121&h=${item.rows *
-                      121}&fit=crop&auto=format&dpr=2 2x`}
-                    alt={item.alt}
-                    loading="lazy"
-                  />
+                  {loading ? (
+                    <Skeleton
+                      variant="rectangular"
+                      width="100%"
+                      sx={{ bgcolor: "#98989859" }}
+                    />
+                  ) : (
+                    <img
+                      src={item.image}
+                      srcSet={`${item.image}?w=121&h=${item.rows *
+                        121}&fit=crop&auto=format&dpr=2 2x`}
+                      alt={item.alt} 
+                    />
+                  )}
                 </ImageListItem>
               ))}
             </ImageList>
-          )}
         </Stack>
       </Container>
     </Box>

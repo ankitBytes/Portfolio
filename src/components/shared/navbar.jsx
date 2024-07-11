@@ -3,6 +3,7 @@ import { Box, Typography, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import { border, borderRadius, fontWeight, margin } from "@mui/system";
 
 export default function Navbar() {
   const buttons = {
@@ -12,10 +13,17 @@ export default function Navbar() {
     "text-transform": "uppercase",
     "font-weight": "bold",
     transition: "all .5s ease-out",
+    margin: '0 1vw',
+    boxShadow: 'none',
+    border: 'none',
+    borderRadius: '2rem',
 
-    "&:hover": {
-      color: "#7fff7f",
-      transform: "scale(1.1)",
+    "&:hover, &:focus": {
+      boxShadow: "#989898 0px 20px 30px -10px",
+      border: "1px solid #989898",
+      background: "#fff",
+      color: "black",
+      fontWeight: 'bolder'
     },
   };
 
@@ -29,10 +37,10 @@ export default function Navbar() {
     console.log(element);
 
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
       setMenu(false);
     }
-  }
+  };
 
   return (
     <Box
@@ -65,10 +73,34 @@ export default function Navbar() {
             Ankit
           </Typography>
           <Stack direction={"row"} display={{ xs: "none", sm: "flex" }}>
-            <Typography sx={buttons} className="navButton" onClick={() => navigate("/")}>Home</Typography>
-            <Typography sx={buttons} className="navButton" onClick={() => handleScrollSection("about")}>About</Typography>
-            <Typography sx={buttons} className="navButton" onClick={() => handleScrollSection("projects")}>Projects</Typography>
-            <Typography sx={buttons} className="navButton"  onClick={() => navigate("/contact")}>Contact</Typography>
+            <Typography
+              sx={buttons}
+              className="navButton"
+              onClick={() => navigate("/")}
+            >
+              Home
+            </Typography>
+            <Typography
+              sx={buttons}
+              className="navButton"
+              onClick={() => handleScrollSection("about")}
+            >
+              About
+            </Typography>
+            <Typography
+              sx={buttons}
+              className="navButton"
+              onClick={() => handleScrollSection("projects")}
+            >
+              Projects
+            </Typography>
+            <Typography
+              sx={buttons}
+              className="navButton"
+              onClick={() => navigate("/contact")}
+            >
+              Contact
+            </Typography>
           </Stack>
           <Box display={{ xs: "block", sm: "none" }}>
             <MenuIcon
@@ -139,10 +171,19 @@ export default function Navbar() {
                 alignItems={"center"}
                 justifyContent={"center"}
               >
-                <Typography sx={buttons} onClick={() => navigate("/")}>Home</Typography>
-                <Typography sx={buttons} onClick={() => handleScrollSection("about")}>About</Typography>
+                <Typography sx={buttons} onClick={() => navigate("/")}>
+                  Home
+                </Typography>
+                <Typography
+                  sx={buttons}
+                  onClick={() => handleScrollSection("about")}
+                >
+                  About
+                </Typography>
                 <Typography sx={buttons}>Projects</Typography>
-                <Typography sx={buttons} onClick={() => navigate("/contact")}>Contact</Typography>
+                <Typography sx={buttons} onClick={() => navigate("/contact")}>
+                  Contact
+                </Typography>
               </Stack>
             </Box>
           </Box>

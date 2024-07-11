@@ -7,8 +7,16 @@ import Content from "../components/shared/content";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LocalPhoneTwoToneIcon from "@mui/icons-material/LocalPhoneTwoTone";
 import EmailTwoToneIcon from "@mui/icons-material/EmailTwoTone";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import XIcon from "@mui/icons-material/X";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 const Contact = () => {
+
+  const handleClick = (action) => {
+    window.location = `${action}`
+  }
+
   return (
     <Box
       sx={{
@@ -53,22 +61,39 @@ const Contact = () => {
                 fontFamily={"Rodies"}
                 letterSpacing={1}
                 sx={{ textDecoration: "underline #A020F0 solid 1px" }}
+                onClick={() => handleClick(`mailto:sahuankitkumar60@gmail.com`)}
               >
                 sahuankitkumar60@gmail.com
               </Typography>
             </Stack>
-            {/* <Stack direction={"row"} spacing={3} alignItems={"center"}>
-              <LocalPhoneTwoToneIcon color={"white"} sx={{ color: "white" }} />
+            <Stack direction={"row"} spacing={3} alignItems={"center"}>
+              <GitHubIcon color={"white"} sx={{ color: "white" }} />
               <Typography
                 variant="h5"
                 color={"white"}
                 fontFamily={"Rodies"}
                 letterSpacing={1}
                 sx={{ textDecoration: "underline #A020F0 solid 1px" }}
+                onClick={() => handleClick('https://github.com/ankitBytes')}
+                target="_blank"
+                component={'a'}
               >
-                +91 7846996759
+                ankitBytes
               </Typography>
-            </Stack> */}
+            </Stack>
+            <Stack direction={"row"} spacing={3} alignItems={"center"}>
+              <LinkedInIcon color={"white"} sx={{ color: "white" }} />
+              <Typography
+                variant="h5"
+                color={"white"}
+                fontFamily={"Rodies"}
+                letterSpacing={1}
+                sx={{ textDecoration: "underline #A020F0 solid 1px" }}
+                onClick={() => handleClick('https://www.linkedin.com/in/ankit-kumar-sahu/')}
+              >
+                Ankit Kumar Sahu
+              </Typography>
+            </Stack>
           </Box>
         </Stack>
         <AboutMeCard />

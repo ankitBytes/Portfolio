@@ -17,6 +17,7 @@ import { collection, onSnapshot } from "firebase/firestore";
 import VanillaTilt from "vanilla-tilt";
 
 import CloseIcon from "@mui/icons-material/Close";
+import LinkIcon from "@mui/icons-material/Link";
 
 import Heading from "./shared/heading";
 
@@ -47,10 +48,10 @@ const Projects = () => {
       glare: true,
       "max-glare": 0.2,
       "transform-style": "preserve-3d",
-      transform: 'translateZ(20px)',
-      gyroscope: true
+      transform: "translateZ(20px)",
+      gyroscope: true,
     });
-  }, [projects])
+  }, [projects]);
 
   const getCols = () => {
     if (isMd) return 3;
@@ -67,7 +68,7 @@ const Projects = () => {
           variant="masonry"
           cols={getCols()}
           gap={10}
-          sx={{ overflow: "hidden" }}
+          sx={{ overflow: "hidden", padding: "5vh 0" }}
         >
           {projects.map((item, i) => (
             <ImageListItem
@@ -96,7 +97,7 @@ export const ProjectCard = ({ projectDetail }) => {
         position: "relative",
         transition: "all 0.35s ease-in-out",
         padding: "1rem",
-        border: '0',
+        border: "0",
         "&:hover": {
           border: "1px solid #989898",
         },
@@ -107,12 +108,16 @@ export const ProjectCard = ({ projectDetail }) => {
       onClick={handleModalOpen}
     >
       <Stack spacing={1} sx={{ position: "relative" }}>
-        <img
-          src={projectDetail.coverImage}
-          style={{ width: "100%", position: "relative" }}
-          loading="lazy"
-          srcSet={`${projectDetail.coverImage}?w=248&fit=crop&auto=format&dpr=2 2x`}
-        />
+        {projectDetail.coverImage ? (
+          <img
+            src={projectDetail.coverImage}
+            style={{ width: "100%", position: "relative" }}
+            loading="lazy"
+            srcSet={`${projectDetail.coverImage}?w=248&fit=crop&auto=format&dpr=2 2x`}
+          />
+        ) : (
+          <Typography color={"#989898"}>Project</Typography>
+        )}
         <Stack
           sx={{
             top: "10%",
@@ -131,10 +136,10 @@ export const ProjectCard = ({ projectDetail }) => {
               whiteSpace: "normal",
               overflow: "hidden",
               textOverflow: "ellipsis",
-              display: '-webkit-box',
-              WebkitBoxOrient: 'vertical',
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
               WebkitLineClamp: 2,
-              maxHeight: '4em'
+              maxHeight: "4em",
             }}
           >
             {projectDetail.projectTitle}
@@ -163,7 +168,7 @@ export const ProjectCard = ({ projectDetail }) => {
                   color: "white",
                   padding: ".5vh 1vw",
                   margin: 0,
-                  background: "#2b2a2a46",
+                  background: "#989898",
                   fontWeight: "bold",
                   fontFamily: "lato",
                   display: i < 3 ? "block" : "none",
@@ -193,7 +198,7 @@ ProjectCard.propTypes = {
     coverImage: PropTypes.string.isRequired,
     projectTitle: PropTypes.string.isRequired,
     projectDescription: PropTypes.string.isRequired,
-    // skillSet: PropTypes.arrayOf(PropTypes.string).isRequired,
+    skillSet: PropTypes.objectOf(PropTypes.string).isRequired,
   }).isRequired,
 };
 
@@ -207,13 +212,17 @@ const ProjectModal = ({ projectDetail, open, setOpen }) => {
     handleClose();
   };
 
+  const handleLinkRedirect = (link) => {
+    window.open(link, "_blank");
+  };
+
   const style = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "80vw",
-    bgcolor: "#ffffff60",
+    bgcolor: "#5757575f",
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
@@ -260,6 +269,10 @@ const ProjectModal = ({ projectDetail, open, setOpen }) => {
             fontWeight={600}
           >
             {projectDetail.projectTitle}
+            <LinkIcon
+              sx={{ color: "#526cff", padding: "0 1vw", fontSize: "3rem" }}
+              onClick={() => handleLinkRedirect(projectDetail.projectLink)}
+            />
           </Typography>
           <Stack spacing={1} direction={"row"} paddingTop={"1vh"}>
             {projectDetail.skillSet.map((skill, i) => (
@@ -269,12 +282,12 @@ const ProjectModal = ({ projectDetail, open, setOpen }) => {
                   color: "white",
                   padding: ".5vh 1vw",
                   margin: 0,
-                  background: "#2b2a2a46",
+                  background: "#989898",
                   fontWeight: "bold",
                   fontFamily: "lato",
 
                   "&:hover": {
-                    background: "#2b2a2a46",
+                    background: "#989898",
                   },
                 }}
               >
@@ -293,7 +306,6 @@ const ProjectModal = ({ projectDetail, open, setOpen }) => {
               src={images}
               style={{ width: "100%", padding: "3vh 0", maxHeight: "80vh" }}
               key={i}
-              loading="lazy"
             />
           ))}
         </Box>
@@ -319,9 +331,9 @@ ProjectModal.propTypes = {
 //     projectTitle: "Trial",
 //     projectDescription: `
 //     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ultricies rutrum nisl, sed tincidunt orci aliquet sit amet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Proin eget purus euismod, feugiat lorem ac, pretium neque. Phasellus a mollis purus. Vivamus cursus porta justo, eget tristique dolor faucibus vitae. Donec placerat dolor erat, vitae iaculis nibh consectetur id. Quisque volutpat nulla non lorem mattis lacinia. Fusce interdum, lectus quis fermentum luctus, lorem est lacinia odio, et egestas eros elit quis libero. Pellentesque tincidunt sapien id odio congue, quis dapibus lectus consectetur. Pellentesque facilisis, nisl ac molestie euismod, nisi orci ultrices mauris, id tristique ipsum lacus eu augue. Nunc maximus at nulla vitae tincidunt. Mauris molestie efficitur porttitor. Maecenas ut magna at augue aliquet tempus.
-    
+
 //     Quisque sed nisl purus. Etiam tortor leo, auctor non eros vel, maximus blandit ligula. Maecenas hendrerit odio sed odio sodales, nec scelerisque est hendrerit. Phasellus erat mauris, mollis sit amet finibus id, pharetra vel mi. Suspendisse et molestie urna. Nam pellentesque sed ante a volutpat. Ut placerat tempus diam in malesuada. Phasellus et odio sit amet ligula accumsan porta.
-    
+
 //     Ut purus turpis, pellentesque eu porttitor sodales, gravida in magna. Praesent tincidunt placerat iaculis. Quisque facilisis elit ac augue vehicula tincidunt et id dolor. Nullam dictum imperdiet suscipit. Nunc ut felis sed diam maximus porta a eget diam. Vivamus suscipit suscipit faucibus. Duis pellentesque orci non est blandit facilisis. Sed consequat lectus ac ullamcorper faucibus. Mauris quis nisi vel erat lobortis ornare eget porta dui. Aliquam non erat odio. Quisque finibus convallis eros ac pulvinar.`,
 //     skillSet: ["ReactJs", "NodeJs", "Firebase"],
 //   },

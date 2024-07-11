@@ -334,7 +334,6 @@ const AddBlog = () => {
           }}
           fullWidth
           margin="none"
-          required
           helperText="file format: jpg, png, jpeg"
           size="small"
           variant="standard"

@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Outlet, Navigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState, Suspense, lazy } from "react";
+import { BrowserRouter, Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
 import PropTypes from "prop-types";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import "./App.css";
+import { Box } from "@mui/material";
+import Loader from "./components/shared/loader";
 import MouseHover from "./components/shared/mouseHover";
-import Home from "./pages/homePage";
-import Contact from "./pages/contact";
 import Navbar from "./components/shared/navbar";
 import Footer from "./components/shared/footer";
-import AdminLayout from "./admin/adminLayout";
-import AdminLogin from './admin/adminLogin';
-import AdminDashboard from "./admin/adminDashboard";
 import { UserAuth } from "./context/authContext";
-import Loader from "./components/shared/loader";
-import { Box } from "@mui/material";
+
+const Home = lazy(() => import("./pages/homePage"));
+const Contact = lazy(() => import("./pages/contact"));
+const AdminLayout = lazy(() => import("./admin/adminLayout"));
+const AdminLogin = lazy(() => import("./admin/adminLogin"));
+const AdminDashboard = lazy(() => import("./admin/adminDashboard"));
 
 const t0 = performance.now();
 
@@ -32,7 +33,7 @@ function App() {
 
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 5000);
+    }, 3000); // Reduce loading time if possible
 
     return () => clearTimeout(timer);
   }, []);
@@ -42,26 +43,28 @@ function App() {
   }
 
   return (
-    <Box sx={{ overflowX: 'hidden'}}>
+    <Box sx={{ overflowX: 'hidden' }}>
       <MouseHover />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<RootLayout />}>
-            <Route index element={<Home />} />
-            <Route path="contact" element={<Contact />} />
-          </Route>
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route path="login" element={<AdminLogin />} />
-            <Route
-              path="dashboard"
-              element={
-                <RequireAuth>
-                  <AdminDashboard />
-                </RequireAuth>
-              }
-            />
-          </Route>
-        </Routes>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route path="/" element={<RootLayout />}>
+              <Route index element={<Home />} />
+              <Route path="contact" element={<Contact />} />
+            </Route>
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route path="login" element={<AdminLogin />} />
+              <Route
+                path="dashboard"
+                element={
+                  <RequireAuth>
+                    <AdminDashboard />
+                  </RequireAuth>
+                }
+              />
+            </Route>
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </Box>
   );
@@ -79,8 +82,9 @@ const RootLayout = () => {
 };
 
 function RequireAuth({ children }) {
-  let { currentUser } = UserAuth();
-  let location = useLocation();
+  const { currentUser } = UserAuth();
+  const location = useLocation();
+
   return currentUser ? (
     children
   ) : (

@@ -62,8 +62,11 @@ const Template = ({ HeadingText, content }) => {
           {content.map((position, i) => (
             <TimelineItem key={i}>
               <TimelineSeparator>
-                <TimelineDot variant="outlined" />
-                <TimelineConnector />
+                <TimelineDot
+                  variant="outlined"
+                  sx={{ borderColor: "rgb(54, 255, 5)", borderWidth: ".2rem" }}
+                />
+                <TimelineConnector sx={{ backgroundColor: "#505050" }} />
               </TimelineSeparator>
               <Stack padding={"0 1rem"} marginTop={"1rem"} key={i}>
                 <Box>
